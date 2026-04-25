@@ -1,0 +1,35 @@
+.itemsTableTable {
+  min-width: 650px;
+}
+
+.itemsTableRow {
+  height: 40px;
+}
+
+.itemsTableCell {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 40px;
+}
+
+.itemsTableHeaderCell {
+  font-weight: 700;
+}
+
+.itemsTableActionsCell {
+  width: 70px;
+  min-width: 70px;
+  max-width: 70px;
+}
+
+.itemsTableActionsBox {
+  display: flex;
+  height: 100%;
+  width: 70px;
+}
+
+.itemsTableIconButton {
+  border-radius: 0 !important;
+  width: 50px;
+  height: 100%;
+}

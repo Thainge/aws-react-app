@@ -1,0 +1,18 @@
+.confirmPopupDialog .MuiDialog-paper {
+  max-width: 500px;
+  width: 100%;
+}
+
+.confirmPopupActions {
+  justify-content: flex-end;
+  column-gap: 0.5em;
+  padding: 0 24px 16px 24px;
+}
+
+.confirmPopupTitle {
+  font-weight: 700;
+}
+
+.confirmPopupActionButton {
+  border-radius: 0 !important;
+}

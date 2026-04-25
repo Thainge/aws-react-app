@@ -1,0 +1,23 @@
+.itemPopupDialog .MuiDialog-paper {
+  width: 800px;
+  max-width: 800px;
+}
+
+.itemPopupFormStack {
+  padding-top: 8px;
+}
+
+.itemPopupActions {
+  justify-content: flex-end;
+  column-gap: 0.5em;
+  padding: 0 24px 16px 24px;
+}
+
+.itemPopupActionButton {
+  width: 150px;
+  border-radius: 0 !important;
+}
+
+.itemPopupTitle {
+  font-weight: 700;
+}
