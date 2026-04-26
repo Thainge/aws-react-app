@@ -76,7 +76,7 @@ export default function ItemsPage() {
 						mb: 1,
 					}}
 				>
-					<h1>Items</h1>
+					<h1>Itemss</h1>
 					<Button variant="contained" color="success" onClick={openAdd}>
 						Add Item
 					</Button>
