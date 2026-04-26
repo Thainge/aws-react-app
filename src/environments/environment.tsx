@@ -1,7 +1,7 @@
 export const environment = {
     production: true,
     appTitle: import.meta.env.VITE_APP_TITLE || 'AWS React App',
-    baseApiUrl: import.meta.env.VITE_API_URL || 'https://g8nsvrtpuk.execute-api.us-east-2.amazonaws.com',
+    baseApiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3001',
     auth: {
         mode: (import.meta.env.VITE_AUTH_MODE || 'mock') as 'mock' | 'cognito',
         mockUser: {

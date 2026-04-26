@@ -23,6 +23,38 @@ type TableProps = {
   onDelete?: (id: number) => void
 }
 
+function formatItemDate(value: Item['date'] | undefined): string {
+	if (!value) return ''
+	const pad2 = (n: number) => String(n).padStart(2, '0')
+	if (typeof value === 'string') {
+		// If we get YYYY-MM-DD (or ISO with time), format without timezone shifts.
+		const head = value.length >= 10 ? value.slice(0, 10) : value
+		if (/^\d{4}-\d{2}-\d{2}$/.test(head)) {
+			const [yyyy, mm, dd] = head.split('-')
+			return `${mm}/${dd}/${yyyy}`
+		}
+
+		// Fallback: try parsing any other date-like string.
+		const parsed = new Date(value)
+		if (!Number.isNaN(parsed.getTime())) {
+			const mm = pad2(parsed.getMonth() + 1)
+			const dd = pad2(parsed.getDate())
+			const yyyy = String(parsed.getFullYear())
+			return `${mm}/${dd}/${yyyy}`
+		}
+
+		return value
+	}
+	if (value instanceof Date) {
+		if (Number.isNaN(value.getTime())) return ''
+		const mm = pad2(value.getMonth() + 1)
+		const dd = pad2(value.getDate())
+		const yyyy = String(value.getFullYear())
+		return `${mm}/${dd}/${yyyy}`
+	}
+	return String(value)
+}
+
 export default function Table({ items, isLoading, onEdit, onDelete }: TableProps) {
 	const showActions = Boolean(onEdit || onDelete)
 
@@ -37,6 +69,7 @@ export default function Table({ items, isLoading, onEdit, onDelete }: TableProps
           <TableRow className="itemsTableRow">
             <TableCell className="itemsTableCell itemsTableHeaderCell">ID</TableCell>
             <TableCell className="itemsTableCell itemsTableHeaderCell">Name</TableCell>
+            <TableCell className="itemsTableCell itemsTableHeaderCell">Date</TableCell>
 				{showActions ? (
 					<TableCell
 						className="itemsTableCell itemsTableHeaderCell itemsTableActionsCell"
@@ -55,7 +88,8 @@ export default function Table({ items, isLoading, onEdit, onDelete }: TableProps
               <TableCell component="th" scope="row" className="itemsTableCell">
                 {item.id}
               </TableCell>
-              <TableCell className="itemsTableCell">{item.name}</TableCell>
+			  <TableCell className="itemsTableCell">{item.name}</TableCell>
+			  <TableCell className="itemsTableCell">{formatItemDate(item.date)}</TableCell>
 				{showActions ? (
 					<TableCell
 						className="itemsTableActionsCell"
