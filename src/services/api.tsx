@@ -1,5 +1,6 @@
 import axios, { type AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios'
 
+import { getAccessToken } from '../auth/token'
 import { environment } from '../environments/environment'
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -153,6 +154,23 @@ export function createApiClient(options: ApiClientOptions = {}) {
 			request<TResponse, TBody>('DELETE', options),
 	}
 }
+const authenticatedAxios: AxiosInstance = axios.create()
 
-export const api = createApiClient({ baseUrl: environment.baseApiUrl })
+authenticatedAxios.interceptors.request.use(async (config) => {
+	const token = await getAccessToken()
+	if (!token) return config
+
+	const currentHeaders = config.headers ?? {}
+	const headerBag = new Headers(currentHeaders as HeadersInit)
+	if (!headerBag.get('Authorization')) {
+		headerBag.set('Authorization', `Bearer ${token}`)
+	}
+	config.headers = Object.fromEntries(headerBag.entries())
+	return config
+})
+
+export const api = createApiClient({
+	baseUrl: environment.baseApiUrl,
+	axiosInstance: authenticatedAxios,
+})
 

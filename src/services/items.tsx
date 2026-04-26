@@ -16,10 +16,13 @@ export type UpdateItemBody = {
     date?: Date | string
 }
 
-export async function getItems(options?: { params?: QueryParams }): Promise<Item[]> {
+type UpdateItemRequestBody = UpdateItemBody & { id: number }
+
+export async function getItems(options?: { params?: QueryParams; signal?: AbortSignal }): Promise<Item[]> {
 	const data = await api.get<unknown>({
-		url: '/api/items',
+		url: '/items',
 		...(options?.params ? { params: options.params } : {}),
+		...(options?.signal ? { signal: options.signal } : {}),
 	})
 
 	if (Array.isArray(data)) return data as Item[]
@@ -29,17 +32,18 @@ export async function getItems(options?: { params?: QueryParams }): Promise<Item
 		if (Array.isArray(maybeItems)) return maybeItems as Item[]
 	}
 
-	throw new Error('Unexpected response shape from GET /api/items')
+	throw new Error('Unexpected response shape from GET /items')
 }
 
 export function createItem(body: CreateItemBody) {
-	return api.post<Item, CreateItemBody>({ url: '/api/items', body })
+	return api.post<Item, CreateItemBody>({ url: '/items', body })
 }
 
 export function updateItem(id: number, body: UpdateItemBody) {
-	return api.put<Item, UpdateItemBody>({ url: `/api/items/${id}`, body })
+	const requestBody: UpdateItemRequestBody = { id, ...body }
+	return api.put<Item, UpdateItemRequestBody>({ url: `/items/${id}`, body: requestBody })
 }
 
 export function deleteItem(id: number) {
-	return api.del<void>({ url: `/api/items/${id}` })
+	return api.del<void>({ url: `/items/${id}` })
 }
